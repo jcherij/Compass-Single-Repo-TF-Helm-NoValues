@@ -1,0 +1,6 @@
+apiVersion: v2
+name: portal-workers
+description: "Compass portal-workers — Asynchronous path: PDF statement generation, secure client-advisor messaging with attachments, and notification delivery via SQS, SES, and SNS."
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

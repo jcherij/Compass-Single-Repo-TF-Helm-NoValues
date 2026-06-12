@@ -1,0 +1,47 @@
+# values.yaml — portal-bff chart defaults
+# Maintained by Platform Engineering.
+# Defines all keys the chart accepts. Overridden by values-platform.yaml,
+# then values-config.yaml, then values-env.yaml.
+
+image:
+  repository: gcr.io/meridian-capital/compass-portal-bff
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "256Mi"
+  limits:
+    cpu: "500m"
+    memory: "512Mi"
+
+port: 8080
+
+serviceAccount:
+  name: portal-bff
+  annotations:
+    eks.amazonaws.com/role-arn: ""  # set in values-env.yaml per environment
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 70
+
+podDisruptionBudget:
+  minAvailable: 1
+
+env:
+  COGNITO_DOMAIN_PREFIX: ""
+
+# Kennari engine precedence test fixtures.
+# Declared here so all downstream values files are clean against the
+# module declaration check. Not referenced by any chart template.
+# Present only in portal-bff — sufficient to validate Kennari's resolution
+# across the full values chain without duplicating across both charts.
+test:
+  testPrecedenceTag: "chart-default"
+  testConfigVsEnv: ""

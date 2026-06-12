@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portal-bff
+  namespace: compass
+  labels:
+    app: portal-bff
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: portal-bff
+  template:
+    metadata:
+      labels:
+        app: portal-bff
+    spec:
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+
+      containers:
+        - name: portal-bff
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.port }}
+          resources:
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+          envFrom:
+            - configMapRef:
+                name: portal-bff-config
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: {{ .Values.port }}
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: {{ .Values.port }}
+            initialDelaySeconds: 5
+            periodSeconds: 10

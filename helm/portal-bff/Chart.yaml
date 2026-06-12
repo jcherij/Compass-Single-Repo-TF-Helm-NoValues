@@ -1,0 +1,6 @@
+apiVersion: v2
+name: portal-bff
+description: "Compass portal-bff — Synchronous client-facing path: session/token handling in front of Cognito, plus holdings and balance queries against Aurora and the Nexus internal API."
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

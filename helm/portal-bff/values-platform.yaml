@@ -1,0 +1,14 @@
+# values-platform.yaml — portal-bff platform baseline
+# Maintained by Platform Engineering. Lives in compass-infra.
+# Evaluation layer 2 of 4: overrides chart defaults, overridden by app values.
+# Platform-wide standards applied uniformly across all Compass services.
+
+image:
+  pullPolicy: Always   # platform standard: always pull in cluster
+
+podDisruptionBudget:
+  minAvailable: 1
+
+# Kennari precedence test fixture — layer 2 of 4
+test:
+  testPrecedenceTag: "platform"
