@@ -713,3 +713,15 @@ resource "aws_cloudwatch_metric_alarm" "notifications_dlq_depth" {
     Tier        = "2"
   }
 }
+
+resource "aws_rds_cluster_parameter_group" "aurora_ssl_enforce" {
+  name_prefix = "${var.resource_prefix}-aurora-ssl-"
+  family      = "aurora-postgresql14" # Update to match your cluster's exact engine version (e.g., aurora-postgresql15)
+  description = "Enforce SSL connections on Aurora PostgreSQL cluster"
+
+  parameter {
+    name         = "rds.force_ssl"
+    value        = "1"
+    apply_method = "pending-reboot"
+  }
+}
