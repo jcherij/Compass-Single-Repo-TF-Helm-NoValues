@@ -713,3 +713,11 @@ resource "aws_cloudwatch_metric_alarm" "notifications_dlq_depth" {
     Tier        = "2"
   }
 }
+
+resource "aws_s3_bucket_versioning" "attachments_versioning" {
+  bucket = aws_s3_bucket.attachments.id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
