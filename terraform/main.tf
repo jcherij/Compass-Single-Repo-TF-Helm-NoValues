@@ -46,7 +46,7 @@ resource "aws_cognito_user_pool" "clients" {
     require_symbols   = true
   }
 
-  mfa_configuration = "OPTIONAL"
+  mfa_configuration = "ON"
 
   software_token_mfa_configuration {
     enabled = true
