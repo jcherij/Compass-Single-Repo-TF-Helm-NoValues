@@ -131,6 +131,7 @@ resource "aws_rds_cluster" "compass" {
     Application = "compass"
     Tier        = "2"
   }
+  enabled_cloudwatch_logs_exports = ["postgresql"]
 }
 
 resource "aws_rds_cluster_instance" "writer" {
