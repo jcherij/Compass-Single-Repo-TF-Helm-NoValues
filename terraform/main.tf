@@ -713,3 +713,14 @@ resource "aws_cloudwatch_metric_alarm" "notifications_dlq_depth" {
     Tier        = "2"
   }
 }
+
+resource "aws_rds_cluster_parameter_group" "aurora_ssl_enforcement" {
+  name        = "${var.resource_prefix}-aurora-ssl-enforce"
+  family      = "aurora-postgresql14" # Adjust family to match your Aurora engine version
+  description = "Enforce SSL for Aurora"
+
+  parameter {
+    name  = "rds.force_ssl"
+    value = "1"
+  }
+}
