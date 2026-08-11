@@ -713,3 +713,43 @@ resource "aws_cloudwatch_metric_alarm" "notifications_dlq_depth" {
     Tier        = "2"
   }
 }
+
+resource "aws_s3_bucket_policy" "attachments_tls_policy" {
+  bucket = aws_s3_bucket.attachments.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid       = "DenyInsecureTransport"
+        Effect    = "Deny"
+        Principal = "*"
+        Action    = "s3:*"
+        Resource = [
+          aws_s3_bucket.attachments.arn,
+          "${aws_s3_bucket.attachments.arn}/*"
+        ]
+        Condition = {
+          Bool = {
+            "aws:SecureTransport" = "false"
+          }
+        }
+      },
+      {
+        Sid       = "DenyOutdatedTLS"
+        Effect    = "Deny"
+        Principal = "*"
+        Action    = "s3:*"
+        Resource = [
+          aws_s3_bucket.attachments.arn,
+          "${aws_s3_bucket.attachments.arn}/*"
+        ]
+        Condition = {
+          NumericLessThan = {
+            "s3:TlsVersion" = "1.2"
+          }
+        }
+      }
+    ]
+  })
+}
